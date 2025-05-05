@@ -4,7 +4,7 @@ import Header from './Header';
 import Editor from './Editor';
 import Preview from './Preview';
 import { ThemeProvider } from '../contexts/ThemeContext';
-import { EditorProvider } from '../contexts/EditorContext';
+import { EditorProvider, useEditor } from '../contexts/EditorContext';
 import { GlobalStyle } from '../themes/GlobalStyle';
 
 const AppContainer = styled.div`
@@ -24,30 +24,45 @@ const EditorPane = styled.div`
   flex: 1;
   height: 100%;
   overflow: auto;
+  transition: width 0.3s ease, flex 0.3s ease;
+  width: ${({ isVisible }) => isVisible ? '50%' : '0'};
+  flex: ${({ isVisible }) => isVisible ? 1 : 0};
+  overflow: ${({ isVisible }) => isVisible ? 'auto' : 'hidden'};
 `;
 
 const PreviewPane = styled.div`
   flex: 1;
   height: 100%;
   overflow: auto;
+  transition: width 0.3s ease, flex 0.3s ease;
+  flex: ${({ isFullWidth }) => isFullWidth ? 2 : 1};
 `;
+
+// レイアウトコンポーネント
+const Layout = () => {
+  const { isEditorVisible } = useEditor();
+
+  return (
+    <AppContainer>
+      <GlobalStyle />
+      <Header />
+      <MainContent>
+        <EditorPane isVisible={isEditorVisible}>
+          <Editor />
+        </EditorPane>
+        <PreviewPane isFullWidth={!isEditorVisible}>
+          <Preview />
+        </PreviewPane>
+      </MainContent>
+    </AppContainer>
+  );
+};
 
 const App = () => {
   return (
     <ThemeProvider>
       <EditorProvider>
-        <AppContainer>
-          <GlobalStyle />
-          <Header />
-          <MainContent>
-            <EditorPane>
-              <Editor />
-            </EditorPane>
-            <PreviewPane>
-              <Preview />
-            </PreviewPane>
-          </MainContent>
-        </AppContainer>
+        <Layout />
       </EditorProvider>
     </ThemeProvider>
   );

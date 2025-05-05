@@ -61,8 +61,17 @@ const ThemeButton = styled.button`
   }
 `;
 
+const ActionButtons = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const ToggleEditorButton = styled(ThemeButton)`
+  margin-right: 16px;
+`;
+
 const Header = () => {
-  const { currentFile, isModified } = useEditor();
+  const { currentFile, isModified, isEditorVisible, toggleEditorVisibility } = useEditor();
   const { themeName, setThemeName } = useTheme();
   
   // ファイル名を表示（パスから抽出）
@@ -78,26 +87,32 @@ const Header = () => {
         {currentFile && <FilePath>{currentFile}</FilePath>}
       </FileInfo>
       
-      <ThemeSelector>
-        <ThemeButton 
-          active={themeName === 'light'} 
-          onClick={() => setThemeName('light')}
-        >
-          ライト
-        </ThemeButton>
-        <ThemeButton 
-          active={themeName === 'dark'} 
-          onClick={() => setThemeName('dark')}
-        >
-          ダーク
-        </ThemeButton>
-        <ThemeButton 
-          active={themeName === 'sepia'} 
-          onClick={() => setThemeName('sepia')}
-        >
-          セピア
-        </ThemeButton>
-      </ThemeSelector>
+      <ActionButtons>
+        <ToggleEditorButton onClick={toggleEditorVisibility}>
+          {isEditorVisible ? 'エディタを隠す' : 'エディタを表示'}
+        </ToggleEditorButton>
+        
+        <ThemeSelector>
+          <ThemeButton 
+            active={themeName === 'light'} 
+            onClick={() => setThemeName('light')}
+          >
+            ライト
+          </ThemeButton>
+          <ThemeButton 
+            active={themeName === 'dark'} 
+            onClick={() => setThemeName('dark')}
+          >
+            ダーク
+          </ThemeButton>
+          <ThemeButton 
+            active={themeName === 'sepia'} 
+            onClick={() => setThemeName('sepia')}
+          >
+            セピア
+          </ThemeButton>
+        </ThemeSelector>
+      </ActionButtons>
     </HeaderContainer>
   );
 };

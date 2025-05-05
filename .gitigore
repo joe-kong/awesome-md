@@ -1,0 +1,23 @@
+# Node.js関連
+/node_modules/
+*.log
+npm-shrinkwrap.json
+yarn.lock
+package-lock.json
+
+# ビルド・リリース関連
+/dist/
+/build/
+/public/
+
+# 開発環境関連
+/coverage/
+/.idea/
+/.vscode/
+.DS_Store
+
+# 他のファイル/ディレクトリ
+/.git/
+*.log
+*.tmp
+*~

@@ -8,7 +8,9 @@ const EditorContext = createContext({
   isModified: false,
   setIsModified: () => {},
   exportHtml: () => {},
-  exportPdf: () => {}
+  exportPdf: () => {},
+  isEditorVisible: true,
+  toggleEditorVisibility: () => {}
 });
 
 export const useEditor = () => useContext(EditorContext);
@@ -18,6 +20,12 @@ export const EditorProvider = ({ children }) => {
   const [currentFile, setCurrentFile] = useState(null);
   const [isModified, setIsModified] = useState(false);
   const [htmlContent, setHtmlContent] = useState('');
+  const [isEditorVisible, setIsEditorVisible] = useState(true);
+
+  // エディタの表示/非表示を切り替える関数
+  const toggleEditorVisibility = () => {
+    setIsEditorVisible(prev => !prev);
+  };
 
   // ファイル操作イベントリスナーの設定
   useEffect(() => {
@@ -100,7 +108,9 @@ export const EditorProvider = ({ children }) => {
         isModified,
         setIsModified,
         setHtmlContent: setHtmlContentHandler,
-        htmlContent
+        htmlContent,
+        isEditorVisible,
+        toggleEditorVisibility
       }}
     >
       {children}
